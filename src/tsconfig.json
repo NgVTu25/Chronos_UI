@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    // ... các cấu hình khác
+    "types": ["vite/client"] 
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.d.ts",
+    "vite-env.d.ts"
+  ],
+  "exclude": ["node_modules"]
+}

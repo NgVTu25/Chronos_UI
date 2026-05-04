@@ -1,10 +1,23 @@
-const baseURL = (import.meta as any).env.VITE_API_URL || 'http://localhost:19024/api';
+/// <reference types="vite/client" />
 
-const axiosClient = {
-  get: (url: string, config?: any) => fetch(`${baseURL}${url}`, { ...config, method: 'GET' }).then(r => r.json()),
-  post: (url: string, data?: any, config?: any) => fetch(`${baseURL}${url}`, { ...config, method: 'POST', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' } }).then(r => r.json()),
-  put: (url: string, data?: any, config?: any) => fetch(`${baseURL}${url}`, { ...config, method: 'PUT', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' } }).then(r => r.json()),
-  delete: (url: string, config?: any) => fetch(`${baseURL}${url}`, { ...config, method: 'DELETE' }).then(r => r.json())
-};
+import axios from 'axios';
+
+const axiosClient = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:19024/api/v1',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  // Có thể cấu hình thêm timeout nếu cần
+  timeout: 10000, 
+});
+
+axiosClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Xử lý lỗi toàn cục (ví dụ: hiển thị thông báo lỗi)
+    console.error("API Error:", error);
+    return Promise.reject(error);
+  }
+);
 
 export default axiosClient;
